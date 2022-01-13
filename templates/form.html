@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+<title>Template</title>
+{% endblock %}
+
+{% block body %}
+<div id="main_form">
+    <form action="/" method="post" id="ingresos">
+        {{ form.hidden_tag() }}
+        <fieldset>
+            <div class="checks" id="inout">
+                {{ form.check.label }}
+                {{ form.check }}
+            </div>
+            <div class="horafecha">
+                {{ form.fecha.label }}
+                {{ form.fecha }}
+                {{ form.hora.label }}
+                {{ form.hora }}
+            </div>
+            <div class="textbox">
+                {{ form.vuelo.label }}
+                {{ form.vuelo }}
+                {{ form.habitacion.label }}
+                {{ form.habitacion }}
+                {{ form.huespedes.label }}
+                {{ form.huespedes }}
+                {{ form.valijas.label }}
+                {{ form.valijas }}
+            </div>
+            <div class="checks" id="puerto">
+                <h3>Puerto:</h3>
+                {{ form.puerto.label }}
+                {{ form.puerto }}
+            </div>
+            <div class="buttons">
+                {{ form.enviar }}
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<!-- <script src="{{ url_for('static', filename='js/form.js') }}"></script> -->
+{% endblock %}

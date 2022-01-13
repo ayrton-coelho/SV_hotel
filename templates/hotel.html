@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+<title>Template</title>
+{% endblock %}
+
+{% block body %}
+<div class="title">
+    <h1>Template</h1>
+</div>
+<div class="viajes">
+    <table>
+        <thead>
+            <tr>
+                <th>Vuelo</th>
+                <th>Hora de llegada</th>
+                <th>Fecha</th>
+                <th>Habitacion</th>
+                <th>Nro. Huespedes</th>
+                <th>Origen</th>
+                <th>Destino</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for viaje in viajes_in %}
+            <tr>
+                <td>{{ viaje.vuelo }}</td>
+                <td>{{ viaje.hora_de_vuelo }}</td>
+                <td>{{ viaje.fecha }}</td>
+                <td>{{ viaje.nro_habitacion }}</td>
+                <td>{{ viaje.nro_personas }}</td>
+                <td>{{ viaje.origen }}</td>
+                <td>{{ viaje.destino }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="viajes">
+    <table>
+        <thead>
+            <tr>
+                <th>Vuelo</th>
+                <th>Hora de salida</th>
+                <th>Fecha</th>
+                <th>Hora del pickup</th>
+                <th>Habitacion</th>
+                <th>Nro. Huespedes</th>
+                <th>Nro. de Valijas</th>
+                <th>Origen</th>
+                <th>Destino</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for viaje in viajes_out %}
+            <tr>
+                <td>{{ viaje.vuelo }}</td>
+                <td>{{ viaje.hora_de_vuelo }}</td>
+                <td>{{ viaje.fecha }}</td>
+                <td>{{ viaje.hora_pickup }}</td>
+                <td>{{ viaje.nro_habitacion }}</td>
+                <td>{{ viaje.nro_personas }}</td>
+                <td>{{ viaje.nro_valijas }}</td>
+                <td>{{ viaje.origen }}</td>
+                <td>{{ viaje.destino }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
