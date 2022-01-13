@@ -25,12 +25,20 @@ input {
     border: solid 1px #999;
 }
 
-input[type=text] {
+.inputtext {
     width: 70%;
+}
+
+.textbox {
+    margin-top: 1em;
 }
 
 .checks {
     margin-bottom: 1em;
+}
+
+#puerto {
+    margin: 0.5em 0.5em;
 }
 
 input[type=radio] + label {

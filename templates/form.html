@@ -6,6 +6,9 @@
 {% endblock %}
 
 {% block body %}
+<div id="headbar">
+    
+</div>
 <div id="main_form">
     <form action="/" method="post" id="ingresos">
         {{ form.hidden_tag() }}
@@ -21,19 +24,18 @@
                 {{ form.hora }}
             </div>
             <div class="textbox">
-                {{ form.vuelo.label }}
-                {{ form.vuelo }}
-                {{ form.habitacion.label }}
-                {{ form.habitacion }}
-                {{ form.huespedes.label }}
-                {{ form.huespedes }}
-                {{ form.valijas.label }}
-                {{ form.valijas }}
+                {{ form.vuelo.label(class="inputtext") }}
+                {{ form.vuelo(class="inputtext") }}
+                {{ form.habitacion.label(class="inputtext") }}
+                {{ form.habitacion(class="inputtext") }}
+                {{ form.huespedes.label(class="inputtext") }}
+                {{ form.huespedes(class="inputtext") }}
+                {{ form.valijas.label(class="inputtext") }}
+                {{ form.valijas(class="inputtext") }}
             </div>
             <div class="checks" id="puerto">
-                <h3>Puerto:</h3>
-                {{ form.puerto.label }}
-                {{ form.puerto }}
+                {{ form.puerto.label(class="puertos") }}
+                {{ form.puerto(class="puertos") }}
             </div>
             <div class="buttons">
                 {{ form.enviar }}

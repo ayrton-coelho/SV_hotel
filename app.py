@@ -39,9 +39,12 @@ class partidas(db.Model):
     destino = db.Column(db.String(128), nullable=False)
 
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def form():
     form = HotelForm()
+    print(dir(form))
+    if form.validate_on_submit():
+        return redirect('/')
     return render_template('form.html', form=form)
     # if request.method == 'POST':
     #     arribo = arribos()
@@ -86,7 +89,6 @@ def form():
     #             print(e)
     #     db.session.commit()
     #     return redirect('/')
-    # else:
 
 @app.route('/hotel', methods=['GET'])
 def hotel():

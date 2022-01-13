@@ -10,7 +10,7 @@ class HotelForm(FlaskForm):
     vuelo = StringField('Vuelo',
                         validators=[DataRequired()])
 
-    fecha = DateField('Start Date',
+    fecha = DateField('Fecha',
                       format='%m/%d/%Y',
                       validators=[InputRequired()])
 
@@ -31,3 +31,5 @@ class HotelForm(FlaskForm):
                         validators=[InputRequired()])
 
     enviar = SubmitField('Enviar')
+
+# ---------- #
