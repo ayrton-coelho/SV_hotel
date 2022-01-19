@@ -20,6 +20,7 @@
                 <th>Nro. Huespedes</th>
                 <th>Origen</th>
                 <th>Destino</th>
+                <th>Operaciones</th>
             </tr>
         </thead>
         <tbody>
@@ -32,6 +33,10 @@
                 <td>{{ viaje.nro_personas }}</td>
                 <td>{{ viaje.origen }}</td>
                 <td>{{ viaje.destino }}</td>
+                <td>
+                    <a href="/editar/{{ viaje.id }}">Editar</a>
+                    <a href="/eliminar/{{ viaje.id }}">Eliminar</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -50,6 +55,7 @@
                 <th>Nro. de Valijas</th>
                 <th>Origen</th>
                 <th>Destino</th>
+                <th>Operaciones</th>
             </tr>
         </thead>
         <tbody>
@@ -64,9 +70,14 @@
                 <td>{{ viaje.nro_valijas }}</td>
                 <td>{{ viaje.origen }}</td>
                 <td>{{ viaje.destino }}</td>
+                <td>
+                    <a href="/editar/{{ viaje.id }}">Editar</a>
+                    <a href="/eliminar/{{ viaje.id }}">Eliminar</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+<!-- <script src="{{ url_for('static', filename='js/tablas.js') }}"></script> -->
 {% endblock %}

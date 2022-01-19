@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import text
 from datetime import datetime
 from modules.form import HotelForm
 from modules.pickup import hora_pickup
@@ -42,7 +43,7 @@ class partidas(db.Model):
     def __repr__(self):
         return 'id: %r\n' % self.id
 
-
+# Renderizar formulario + conectar y guardar en db
 @app.route("/", methods=['GET', 'POST'])
 def form():
     form = HotelForm()
@@ -98,19 +99,36 @@ def form():
     else:
         return render_template('form.html', form=form)
 
+# Renderizar tablas de viajes para hoteles
 @app.route('/hotel', methods=['GET'])
 def hotel():
     viajes_in = arribos.query.order_by(arribos.hora_creacion.desc()).all()
-    print(viajes_in)
     viajes_out = partidas.query.order_by(partidas.hora_creacion.desc()).all()
-    print(viajes_out)
     return render_template('hotel.html', viajes_in=viajes_in, viajes_out=viajes_out)
 
+# Renderizar tablas de viajes para transportistas
 @app.route('/transporte')
 def transporte():
     viajes_in = arribos.query.order_by(arribos.hora_creacion.desc()).all()
     viajes_out = partidas.query.order_by(partidas.hora_creacion.desc()).all()
     return render_template('transporte.html', viajes_in=viajes_in, viajes_out=viajes_out)
+
+# Ruta para editar tablas
+@app.route('/eliminar/<string:id>')
+def hotel_delete(id):
+    try:
+        row = db.session.get(arribos, id)
+        db.session.delete(row)
+        db.session.commit()
+    except Exception as e:
+        print(e)
+    try:
+        row = db.session.get(partidas, id)
+        db.session.delete(row)
+        db.session.commit()
+    except Exception as e:
+        print(e)
+    return redirect('/hotel')
 
 if __name__ == "__main__":
     app.run(debug=True)
