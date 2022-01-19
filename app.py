@@ -51,31 +51,13 @@ def form():
         id = str(uuid.uuid4())
         created_at = datetime.utcnow()
         check = form.check.data
-        print("-----------------------------------------")
-        print(check)
-        print(type(check))
         vuelo = form.vuelo.data
-        print(vuelo)
-        print(type(vuelo))
         hora = form.hora.data
-        print(hora)
-        print(type(hora))
         fecha = form.fecha.data
-        print(fecha)
-        print(type(fecha))
         habitacion = form.habitacion.data
-        print(habitacion)
-        print(type(habitacion))
         huespedes = form.huespedes.data
-        print(huespedes)
-        print(type(huespedes))
         valijas = form.valijas.data
-        print(valijas)
-        print(type(valijas))
         puerto = form.puerto.data
-        print(puerto)
-        print(type(puerto))
-        print("-----------------------------------------")
         hotel = 'random'
         if check == 'Arribo':
             arribo.id = id
