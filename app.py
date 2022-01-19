@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from modules.form import HotelForm
+from modules.pickup import hora_pickup
 import uuid
 
 app = Flask(__name__)
@@ -81,7 +82,7 @@ def form():
             partida.vuelo = vuelo
             partida.hora_de_vuelo = hora
             partida.fecha = fecha
-            partida.hora_pickup = hora
+            partida.hora_pickup = hora_pickup(hora, fecha)
             partida.nro_habitacion = habitacion
             partida.nro_personas = huespedes
             partida.nro_valijas = valijas
@@ -100,7 +101,9 @@ def form():
 @app.route('/hotel', methods=['GET'])
 def hotel():
     viajes_in = arribos.query.order_by(arribos.hora_creacion.desc()).all()
+    print(viajes_in)
     viajes_out = partidas.query.order_by(partidas.hora_creacion.desc()).all()
+    print(viajes_out)
     return render_template('hotel.html', viajes_in=viajes_in, viajes_out=viajes_out)
 
 @app.route('/transporte')

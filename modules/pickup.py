@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-"""13:23:00"""
+"""Hora de partida menos 3:30 para pickup"""
 
 def hora_pickup(hora, fecha):
-    hora_vuelo = hora.split(":")
+    hora_vuelo = str(hora).split(":")
     h = int(hora_vuelo[0])
     m = int(hora_vuelo[1])
     h_flag = 0
@@ -46,10 +46,10 @@ def hora_pickup(hora, fecha):
 
     # checkear fecha edge case
     if D_flag == 1:
-        fecha = fecha.split("/")
-        dia = int(fecha[0])
+        fecha = str(fecha).split("-")
+        dia = int(fecha[2])
         mes = int(fecha[1])
-        año = int(fecha[2])
+        año = int(fecha[0])
         M_flag = 0
         if dia == 1:
             mes = mes - 1
