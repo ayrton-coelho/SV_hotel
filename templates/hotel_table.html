@@ -2,7 +2,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
-<title>Transporte</title>
+<title>Hotel</title>
 {% endblock %}
 
 {% block body %}
@@ -34,7 +34,8 @@
                 <td>{{ viaje.origen }}</td>
                 <td>{{ viaje.destino }}</td>
                 <td>
-                    <a href="/editar/t/{{ viaje.id }}">Editar</a>
+                    <a href="/hotel/editar/{{ viaje.id }}">Editar</a>
+                    <a href="/hotel/eliminar/{{ viaje.id }}">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}
@@ -70,11 +71,13 @@
                 <td>{{ viaje.origen }}</td>
                 <td>{{ viaje.destino }}</td>
                 <td>
-                    <a href="/editar/t/{{ viaje.id }}">Editar</a>
+                    <a href="/hotel/editar/{{ viaje.id }}">Editar</a>
+                    <a href="/hotel/eliminar/{{ viaje.id }}">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+<!-- <script src="{{ url_for('static', filename='js/tablas.js') }}"></script> -->
 {% endblock %}

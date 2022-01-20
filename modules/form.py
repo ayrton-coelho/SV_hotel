@@ -24,7 +24,7 @@ class HotelForm(FlaskForm):
                              validators=[DataRequired(), NumberRange(min=1)])
 
     valijas = IntegerField('N° valijas',
-                           validators=[DataRequired(), NumberRange(min=1)])
+                           validators=[DataRequired(), NumberRange(min=0)])
 
     puerto = RadioField('Puerto',
                         choices=['Aeropuerto Carrasco', 'Puerto Montevideo', 'Aeropuerto Pde'],
