@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+<title>Editar Partida</title>
+{% endblock %}
+
+{% block body %}
+<div id="main_form">
+    <form action="/hotel/editar/out/{{ viaje.id }}" method="POST" id="ingresos">
+        {{ form.hidden_tag() }}
+        <fieldset>
+            <div class="horafecha">
+                {{ form.fecha.label }}
+                {{ form.fecha(value=viaje.fecha) }}
+                {{ form.hora.label }}
+                {{ form.hora(value=viaje.hora_de_vuelo) }}
+            </div>
+            <div class="textbox">
+                {{ form.vuelo.label(class="inputtext") }}
+                {{ form.vuelo(class="inputtext", value=viaje.vuelo) }}
+                {{ form.habitacion.label(class="inputtext") }}
+                {{ form.habitacion(class="inputtext", value=viaje.nro_habitacion) }}
+                {{ form.huespedes.label(class="inputtext") }}
+                {{ form.huespedes(class="inputtext", value=viaje.nro_personas) }}
+                {{ form.valijas.label(class="inputtext") }}
+                {{ form.valijas(class="inputtext", value=viaje.nro_valijas) }}
+            </div>
+            <div class="checks" id="puerto">
+                {{ form.puerto.label(class="puertos") }}
+                {{ form.puerto(class="puertos", value=viaje.origen) }}
+            </div>
+            <div class="buttons">
+                {{ form.enviar }}
+            </div>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}

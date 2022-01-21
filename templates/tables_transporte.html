@@ -2,7 +2,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
-<title>Hotel</title>
+<title>Transporte Viajes</title>
 {% endblock %}
 
 {% block body %}
@@ -24,7 +24,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for viaje in viajes_in %}
+            {% for viaje in in_viajes %}
             <tr>
                 <td>{{ viaje.vuelo }}</td>
                 <td>{{ viaje.hora_de_vuelo }}</td>
@@ -34,8 +34,7 @@
                 <td>{{ viaje.origen }}</td>
                 <td>{{ viaje.destino }}</td>
                 <td>
-                    <a href="/hotel/editar/{{ viaje.id }}">Editar</a>
-                    <a href="/hotel/eliminar/{{ viaje.id }}">Eliminar</a>
+                    <a href="/t/editar/{{ viaje.id }}">Editar</a>
                 </td>
             </tr>
             {% endfor %}
@@ -59,7 +58,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for viaje in viajes_out %}
+            {% for viaje in out_viajes %}
             <tr>
                 <td>{{ viaje.vuelo }}</td>
                 <td>{{ viaje.hora_de_vuelo }}</td>
@@ -71,13 +70,11 @@
                 <td>{{ viaje.origen }}</td>
                 <td>{{ viaje.destino }}</td>
                 <td>
-                    <a href="/hotel/editar/{{ viaje.id }}">Editar</a>
-                    <a href="/hotel/eliminar/{{ viaje.id }}">Eliminar</a>
+                    <a href="/t/editar/{{ viaje.id }}">Editar</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
-<!-- <script src="{{ url_for('static', filename='js/tablas.js') }}"></script> -->
 {% endblock %}

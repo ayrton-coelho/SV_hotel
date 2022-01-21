@@ -11,6 +11,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://ayrton:password@localhost/sv_ho
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 db = SQLAlchemy(app)
 
+
+##-------------------##
+# vvv SQLAlchemy vvv  #
+##-------------------##
 class arribos(db.Model):
     __tablename__ = 'sv_hotel_in'
     id = db.Column(db.String(36), primary_key=True)
@@ -43,8 +47,9 @@ class partidas(db.Model):
     def __repr__(self):
         return f'id: {self.id}\nvuelo: {self.vuelo}\nhora: {self.hora_de_vuelo}\nfecha: {self.fecha}\nhuespedes: {self.nro_personas}\nhabitacion: {self.nro_habitacion}\norigen: {self.origen}\ndestino: {self.destino}\n'
 
-
-# Renderizar formulario + conectar y guardar en db
+##--------------------------------------------------##
+# Renderizar formulario principal y conectar con db. #
+##--------------------------------------------------##
 @app.route("/", methods=['GET', 'POST'])
 def form():
     form = HotelForm()
@@ -98,40 +103,36 @@ def form():
                 print(e)
         return redirect('/')
     else:
-        return render_template('hotel_form.html', form=form)
+        return render_template('form_hotel_main.html', form=form)
 
-# Renderizar tablas de viajes para hoteles
+##-----------------------------------------##
+# Renderizar tablas de viajes para hoteles. #
+##-----------------------------------------##
 @app.route('/hotel', methods=['GET'])
 def hotel():
-    viajes_in = arribos.query.order_by(arribos.hora_creacion.desc()).all()
-    viajes_out = partidas.query.order_by(partidas.hora_creacion.desc()).all()
-    return render_template('hotel_table.html', viajes_in=viajes_in, viajes_out=viajes_out)
+    in_viajes = arribos.query.order_by(arribos.hora_creacion.desc()).all()
+    out_viajes = partidas.query.order_by(partidas.hora_creacion.desc()).all()
+    return render_template('tables_hotel.html', in_viajes=in_viajes, out_viajes=out_viajes)
 
-# Ruta para eliminar elementos de tabla
-@app.route('/hotel/eliminar/<string:id>')
-def hotel_delete(id):
-    try:
-        row = db.session.get(arribos, id)
-        db.session.delete(row)
-        db.session.commit()
-    except Exception:
-        pass
-    try:
-        row = db.session.get(partidas, id)
-        db.session.delete(row)
-        db.session.commit()
-    except Exception:
-        pass
-    return redirect('/hotel')
+##------------------------------------------------##
+# Renderizar tablas de viajes para transportistas. #
+##------------------------------------------------##
+@app.route('/transporte')
+def transporte():
+    in_viajes = arribos.query.order_by(arribos.hora_creacion.desc()).all()
+    out_viajes = partidas.query.order_by(partidas.hora_creacion.desc()).all()
+    return render_template('tables_transporte.html', in_viajes=in_viajes, out_viajes=out_viajes)
 
-# Ruta para editar viajes
-@app.route('/hotel/editar/<string:id>', methods=['GET', 'POST'])
-def hotel_edit(id):
+
+##------------------------##
+# Editar viajes (Hoteles). #
+##------------------------##
+
+# in #
+@app.route('/hotel/editar/in/<string:id>', methods=['GET', 'POST'])
+def hotel_edit_in(id):
     form = HotelForm()
-    check = form.check.data
-    print(check)
-    viaje_in = arribos.query.get(id)
-    viaje_out = partidas.query.get(id)
+    in_viaje = arribos.query.get(id)
     if request.method == 'POST':
         new_id = str(uuid.uuid4())
         created_at = datetime.utcnow()
@@ -140,11 +141,10 @@ def hotel_edit(id):
         fecha = form.fecha.data
         habitacion = form.habitacion.data
         huespedes = form.huespedes.data
-        valijas = form.valijas.data
         puerto = form.puerto.data
         hotel = 'random'
         try:
-            db.session.delete(viaje_in)
+            db.session.delete(in_viaje)
             arribo = arribos()
             arribo.id = new_id
             arribo.hora_creacion = created_at
@@ -159,8 +159,28 @@ def hotel_edit(id):
             db.session.commit()
         except Exception as e:
             print(e)
+        return redirect('/hotel')
+    else:
+        return render_template('form_edit_in.html', form=form, viaje=in_viaje)
+
+# out #
+@app.route('/hotel/editar/out/<string:id>', methods=['GET', 'POST'])
+def hotel_edit_out(id):
+    form = HotelForm()
+    out_viaje = partidas.query.get(id)
+    if request.method == 'POST':
+        new_id = str(uuid.uuid4())
+        created_at = datetime.utcnow()
+        vuelo = form.vuelo.data
+        hora = form.hora.data
+        fecha = form.fecha.data
+        habitacion = form.habitacion.data
+        huespedes = form.huespedes.data
+        valijas = form.valijas.data
+        puerto = form.puerto.data
+        hotel = 'random'
         try:
-            db.session.delete(viaje_out)
+            db.session.delete(out_viaje)
             partida = partidas()
             partida.id = new_id
             partida.hora_creacion = created_at
@@ -179,17 +199,36 @@ def hotel_edit(id):
             print(e)
         return redirect('/hotel')
     else:
-        if check == 'Arribo':
-            return render_template('hotel_edit_viaje.html', form=form, viaje=viaje_in)
-        else:
-            return render_template('hotel_edit_viaje.html', form=form, viaje=viaje_out)
+        return render_template('form_edit_out.html', form=form, viaje=out_viaje)
 
-# Renderizar tablas de viajes para transportistas
-@app.route('/transporte')
-def transporte():
-    viajes_in = arribos.query.order_by(arribos.hora_creacion.desc()).all()
-    viajes_out = partidas.query.order_by(partidas.hora_creacion.desc()).all()
-    return render_template('transporte_table.html', viajes_in=viajes_in, viajes_out=viajes_out)
+##--------------------------------------------##
+# (BTN) Eliminar un viaje de la tabla arribos. #
+##--------------------------------------------##
+@app.route('/hotel/eliminar/in/<string:id>')
+def hotel_delete_in(id):
+    try:
+        row = db.session.get(arribos, id)
+        db.session.delete(row)
+        db.session.commit()
+    except Exception:
+        pass
+    return redirect('/hotel')
 
+##---------------------------------------------##
+# (BTN) Eliminar un viaje de la tabla partidas. #
+##---------------------------------------------##
+@app.route('/hotel/eliminar/out/<string:id>')
+def hotel_delete_out(id):
+    try:
+        row = db.session.get(partidas, id)
+        db.session.delete(row)
+        db.session.commit()
+    except Exception:
+        pass
+    return redirect('/hotel')
+
+#-----#
+# Run #
+#-----#
 if __name__ == "__main__":
     app.run(debug=True)

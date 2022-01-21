@@ -2,7 +2,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
-<title>Transporte</title>
+<title>Hotel Viajes</title>
 {% endblock %}
 
 {% block body %}
@@ -10,7 +10,7 @@
     <h1>Template</h1>
 </div>
 <div class="viajes">
-    <table>
+    <table id="table_in">
         <thead>
             <tr>
                 <th>Vuelo</th>
@@ -24,7 +24,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for viaje in viajes_in %}
+            {% for viaje in in_viajes %}
             <tr>
                 <td>{{ viaje.vuelo }}</td>
                 <td>{{ viaje.hora_de_vuelo }}</td>
@@ -34,7 +34,8 @@
                 <td>{{ viaje.origen }}</td>
                 <td>{{ viaje.destino }}</td>
                 <td>
-                    <a href="/t/editar/{{ viaje.id }}">Editar</a>
+                    <a href="/hotel/editar/in/{{ viaje.id }}">Editar</a>
+                    <a href="/hotel/eliminar/in/{{ viaje.id }}">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}
@@ -42,7 +43,7 @@
     </table>
 </div>
 <div class="viajes">
-    <table>
+    <table id="table_out">
         <thead>
             <tr>
                 <th>Vuelo</th>
@@ -58,7 +59,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for viaje in viajes_out %}
+            {% for viaje in out_viajes %}
             <tr>
                 <td>{{ viaje.vuelo }}</td>
                 <td>{{ viaje.hora_de_vuelo }}</td>
@@ -70,11 +71,13 @@
                 <td>{{ viaje.origen }}</td>
                 <td>{{ viaje.destino }}</td>
                 <td>
-                    <a href="/t/editar/{{ viaje.id }}">Editar</a>
+                    <a href="/hotel/editar/out/{{ viaje.id }}">Editar</a>
+                    <a href="/hotel/eliminar/out/{{ viaje.id }}">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+<!-- <script src="{{ url_for('static', filename='js/tablas.js') }}"></script> -->
 {% endblock %}

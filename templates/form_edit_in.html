@@ -2,18 +2,14 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
-<title>Editar Formulario</title>
+<title>Editar Arribo</title>
 {% endblock %}
 
 {% block body %}
 <div id="main_form">
-    <form action="/hotel/editar/{{ viaje.id }}" method="post" id="ingresos">
+    <form action="/hotel/editar/in/{{ viaje.id }}" method="POST" id="ingresos">
         {{ form.hidden_tag() }}
         <fieldset>
-            <div class="checks" id="inout">
-                {{ form.check.label }}
-                {{ form.check }}
-            </div>
             <div class="horafecha">
                 {{ form.fecha.label }}
                 {{ form.fecha(value=viaje.fecha) }}
