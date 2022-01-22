@@ -7,9 +7,10 @@
 
 {% block body %}
 <div class="title">
-    <h1>Template</h1>
+    <h1>Viajes</h1>
 </div>
 <div class="viajes">
+    <h1>In</h1>
     <table>
         <thead>
             <tr>
@@ -34,7 +35,7 @@
                 <td>{{ viaje.origen }}</td>
                 <td>{{ viaje.destino }}</td>
                 <td>
-                    <a href="/t/editar/{{ viaje.id }}">Editar</a>
+                    <a href="/transporte/comment/in/{{ viaje.id }}">Editar</a>
                 </td>
             </tr>
             {% endfor %}
@@ -42,6 +43,7 @@
     </table>
 </div>
 <div class="viajes">
+    <h1>Out</h1>
     <table>
         <thead>
             <tr>
@@ -70,7 +72,7 @@
                 <td>{{ viaje.origen }}</td>
                 <td>{{ viaje.destino }}</td>
                 <td>
-                    <a href="/t/editar/{{ viaje.id }}">Editar</a>
+                    <a href="/transporte/comment/out/{{ viaje.id }}">Editar</a>
                 </td>
             </tr>
             {% endfor %}

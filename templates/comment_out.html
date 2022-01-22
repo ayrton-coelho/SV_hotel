@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+<title>Comentario del viaje</title>
+{% endblock %}
+{% block body %}
+<div id="main_form">
+    <form action="/transporte/comment/out/{{ id }}" method="post", id="ingresos">
+        {{ form.hidden_tag() }}
+        <fieldset>
+            <div class="textbox">
+                {{ form.comment.label }}
+                {{ form.comment(rows="10", cols="50") }}
+            </div>
+        </fieldset>
+        <div class="buttons">
+            {{ form.enviar }}
+        </div>
+    </form>
+</div>
+{% endblock %}

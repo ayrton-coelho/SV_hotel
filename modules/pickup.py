@@ -28,6 +28,11 @@ def hora_pickup(hora, fecha):
             D_flag = 1
         else:
             h = 0
+    else:
+        if h_flag == 1:
+            h = h - 4
+        else:
+            h = h - 3
 
     # hora transformada exitosamente, pasar a string
     h_str = ""

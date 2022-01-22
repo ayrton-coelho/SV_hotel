@@ -1,8 +1,12 @@
+from hashlib import new
 from flask import Flask, render_template, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import ForeignKey
 from sqlalchemy.sql import text
 from datetime import datetime
 from modules.form import HotelForm
+from modules.comment_in import Comment_in
+from modules.comment_out import Comment_out
 from modules.pickup import hora_pickup
 import uuid
 
@@ -46,6 +50,16 @@ class partidas(db.Model):
 
     def __repr__(self):
         return f'id: {self.id}\nvuelo: {self.vuelo}\nhora: {self.hora_de_vuelo}\nfecha: {self.fecha}\nhuespedes: {self.nro_personas}\nhabitacion: {self.nro_habitacion}\norigen: {self.origen}\ndestino: {self.destino}\n'
+
+class comentario_in(db.Model):
+    __tablename__ = 'transport_comments_in'
+    id = db.Column(db.String(36), db.ForeignKey('sv_hotel_in.id'), primary_key=True)
+    comment = db.Column(db.String(1024))
+
+class comentario_out(db.Model):
+    __tablename__ = 'transport_comments_out'
+    id = db.Column(db.String(36), db.ForeignKey('sv_hotel_out.id'), primary_key=True)
+    comment = db.Column(db.String(1024))
 
 ##--------------------------------------------------##
 # Renderizar formulario principal y conectar con db. #
@@ -134,28 +148,13 @@ def hotel_edit_in(id):
     form = HotelForm()
     in_viaje = arribos.query.get(id)
     if request.method == 'POST':
-        new_id = str(uuid.uuid4())
-        created_at = datetime.utcnow()
-        vuelo = form.vuelo.data
-        hora = form.hora.data
-        fecha = form.fecha.data
-        habitacion = form.habitacion.data
-        huespedes = form.huespedes.data
-        puerto = form.puerto.data
-        hotel = 'random'
         try:
-            db.session.delete(in_viaje)
-            arribo = arribos()
-            arribo.id = new_id
-            arribo.hora_creacion = created_at
-            arribo.vuelo = vuelo
-            arribo.hora_de_vuelo = hora
-            arribo.fecha = fecha
-            arribo.nro_habitacion = habitacion
-            arribo.nro_personas = huespedes
-            arribo.origen = puerto
-            arribo.destino = hotel
-            db.session.add(arribo)
+            setattr(in_viaje, 'vuelo', form.vuelo.data)
+            setattr(in_viaje, 'hora_de_vuelo', form.hora.data)
+            setattr(in_viaje, 'fecha', form.fecha.data)
+            setattr(in_viaje, 'nro_habitacion', form.habitacion.data)
+            setattr(in_viaje, 'nro_personas', form.huespedes.data)
+            setattr(in_viaje, 'origen', form.puerto.data)
             db.session.commit()
         except Exception as e:
             print(e)
@@ -169,31 +168,18 @@ def hotel_edit_out(id):
     form = HotelForm()
     out_viaje = partidas.query.get(id)
     if request.method == 'POST':
-        new_id = str(uuid.uuid4())
-        created_at = datetime.utcnow()
-        vuelo = form.vuelo.data
         hora = form.hora.data
         fecha = form.fecha.data
-        habitacion = form.habitacion.data
-        huespedes = form.huespedes.data
-        valijas = form.valijas.data
-        puerto = form.puerto.data
-        hotel = 'random'
+        pickup = hora_pickup(hora, fecha)
         try:
-            db.session.delete(out_viaje)
-            partida = partidas()
-            partida.id = new_id
-            partida.hora_creacion = created_at
-            partida.vuelo = vuelo
-            partida.hora_de_vuelo = hora
-            partida.fecha = fecha
-            partida.hora_pickup = hora_pickup(hora, fecha)
-            partida.nro_habitacion = habitacion
-            partida.nro_personas = huespedes
-            partida.nro_valijas = valijas
-            partida.origen = hotel
-            partida.destino = puerto
-            db.session.add(partida)
+            setattr(out_viaje, 'vuelo', form.vuelo.data)
+            setattr(out_viaje, 'hora_de_vuelo', hora)
+            setattr(out_viaje, 'fecha', fecha)
+            setattr(out_viaje, 'hora_pickup', pickup)
+            setattr(out_viaje, 'nro_habitacion', form.habitacion.data)
+            setattr(out_viaje, 'nro_personas', form.huespedes.data)
+            setattr(out_viaje, 'nro_valijas', form.valijas.data)
+            setattr(out_viaje, 'destino', form.puerto.data)
             db.session.commit()
         except Exception as e:
             print(e)
@@ -227,8 +213,54 @@ def hotel_delete_out(id):
         pass
     return redirect('/hotel')
 
-#-----#
-# Run #
-#-----#
+##--------------------------------##
+# Agregar comentario (Transporte). #
+##--------------------------------##
+
+# in #
+@app.route('/transporte/comment/in/<string:id>', methods=['GET', 'POST'])
+def transporte_comment_in(id):
+    import traceback
+    form = Comment_in()
+    if request.method == 'POST':
+        try:
+            old_comment = comentario_in.query.get(id)
+            if old_comment:
+                db.session.delete(old_comment)
+            new_comment = comentario_in()
+            setattr(new_comment, 'id', id)
+            setattr(new_comment, 'comment', form.comment.data)
+            db.session.add(new_comment)
+            db.session.commit()
+        except Exception:
+            traceback.print_exc()
+        return redirect('/transporte')
+    else:
+        return render_template('comment_in.html', form=form, id=id)
+
+# out #
+@app.route('/transporte/comment/out/<string:id>', methods=['GET', 'POST'])
+def transporte_comment_out(id):
+    import traceback
+    form = Comment_out()
+    if request.method == 'POST':
+        try:
+            old_comment = comentario_out.query.get(id)
+            if old_comment:
+                db.session.delete(old_comment)
+            new_comment = comentario_out()
+            setattr(new_comment, 'id', id)
+            setattr(new_comment, 'comment', form.comment.data)
+            db.session.add(new_comment)
+            db.session.commit()
+        except Exception:
+            traceback.print_exc()
+        return redirect('/transporte')
+    else:
+        return render_template('comment_out.html', form=form, id=id)
+
+#----------------##
+# Run Application #
+#----------------##
 if __name__ == "__main__":
     app.run(debug=True)
