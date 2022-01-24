@@ -10,7 +10,7 @@
     <h1>Viajes</h1>
 </div>
 <div class="viajes">
-    <h1>In</h1>
+    <h1>Arribos</h1>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -28,7 +28,7 @@
             {% for viaje in in_viajes %}
             <tr>
                 <td>{{ viaje.vuelo }}</td>
-                <td>{{ viaje.hora_de_vuelo }}</td>
+                <td>{{ viaje.hora_de_vuelo[:5] }}</td>
                 <td>{{ viaje.fecha }}</td>
                 <td>{{ viaje.nro_habitacion }}</td>
                 <td>{{ viaje.nro_personas }}</td>
@@ -43,7 +43,7 @@
     </table>
 </div>
 <div class="viajes">
-    <h1>Out</h1>
+    <h1>Partidas</h1>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -63,7 +63,7 @@
             {% for viaje in out_viajes %}
             <tr>
                 <td>{{ viaje.vuelo }}</td>
-                <td>{{ viaje.hora_de_vuelo }}</td>
+                <td>{{ viaje.hora_de_vuelo[:5] }}</td>
                 <td>{{ viaje.fecha }}</td>
                 <td>{{ viaje.hora_pickup }}</td>
                 <td>{{ viaje.nro_habitacion }}</td>

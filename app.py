@@ -10,6 +10,7 @@ from modules.comment_in import Comment_in
 from modules.comment_out import Comment_out
 from modules.pickup import hora_pickup
 import uuid
+from traceback import print_exc
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://ayrton:password@localhost/sv_hoteles'
@@ -243,6 +244,8 @@ def hotel_delete_out(id):
 def transporte_comment_in(id):
     import traceback
     form = Comment_in()
+    viaje = arribos.query.get(id)
+    vuelo = viaje.vuelo
     if request.method == 'POST':
         try:
             old_comment = comentario_in.query.get(id)
@@ -257,13 +260,15 @@ def transporte_comment_in(id):
             traceback.print_exc()
         return redirect('/transporte')
     else:
-        return render_template('comment_in.html', form=form, id=id)
+        return render_template('comment_in.html', form=form, id=id, vuelo=vuelo)
 
 # out #
 @app.route('/transporte/comment/out/<string:id>', methods=['GET', 'POST'])
 def transporte_comment_out(id):
     import traceback
     form = Comment_out()
+    viaje = partidas.query.get(id)
+    vuelo = viaje.vuelo
     if request.method == 'POST':
         try:
             old_comment = comentario_out.query.get(id)
@@ -278,7 +283,7 @@ def transporte_comment_out(id):
             traceback.print_exc()
         return redirect('/transporte')
     else:
-        return render_template('comment_out.html', form=form, id=id)
+        return render_template('comment_out.html', form=form, id=id, vuelo=vuelo)
 
 ##-----------------##
 # Display comments. #
@@ -301,6 +306,52 @@ def display_comments():
                 comments_list_out.append((comment.comment, viaje.vuelo))
 
     return render_template('table_comments.html', comments_in=comments_list_in, comments_out=comments_list_out)
+
+def autorrellenar():
+    vuelos = ['ABC 123', 'JBR 5443', 'HNX 890', 'KAP 314', 'UFW 427']
+    hoteles = ['Radisson', 'Ibis', 'Columbia', 'Palladium', 'Holiday Inn']
+    puertos = ['Aeropuerto Pde', 'Aeropuerto de Carrasco', 'Puerto', 'Aeropuerto de Carrasco', 'Aeropuerto de Carrasco']
+    horas = ['23:30', '15:15', '02:00', '17:00', '11:00']
+    fechas = ['2022-01-06', '2022-04-18', '2022-08-01', '2022-05-16', '2022-09-21']
+    habitacion = [201, 303, 600, 116, 79]
+    personas = [2, 1, 3, 2, 2]
+    valijas = [2, 1, 2, 3, 2]
+    for i in range(len(vuelos)):
+        viaje = arribos()
+        viaje.id = uuid.uuid4()
+        viaje.hora_creacion = datetime.utcnow()
+        viaje.vuelo = vuelos[i]
+        viaje.destino = hoteles[i]
+        viaje.origen = puertos[i]
+        viaje.hora_de_vuelo = horas[i]
+        viaje.fecha = fechas[i]
+        viaje.nro_habitacion = habitacion[i]
+        viaje.nro_personas = personas[i]
+        try:
+            db.session.add(viaje)
+            db.session.commit()
+        except:
+            print_exc()
+    for i in range(len(vuelos)):
+        viaje = partidas()
+        viaje.id = uuid.uuid4()
+        viaje.hora_creacion = datetime.utcnow()
+        viaje.vuelo = vuelos[i]
+        viaje.destino = hoteles[i]
+        viaje.origen = puertos[i]
+        viaje.hora_de_vuelo = horas[i]
+        viaje.hora_pickup = hora_pickup(horas[i], fechas[i])
+        viaje.fecha = fechas[i]
+        viaje.nro_habitacion = habitacion[i]
+        viaje.nro_personas = personas[i]
+        viaje.nro_valijas = valijas[i]
+        try:
+            db.session.add(viaje)
+            db.session.commit()
+        except:
+            print_exc()
+
+
 
 #----------------##
 # Run Application #
