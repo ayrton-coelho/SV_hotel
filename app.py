@@ -56,10 +56,16 @@ class comentario_in(db.Model):
     id = db.Column(db.String(36), db.ForeignKey('sv_hotel_in.id'), primary_key=True)
     comment = db.Column(db.String(1024))
 
+    def __repr__(self):
+        return f'id: {self.id}\ncomment: {self.comment}'
+
 class comentario_out(db.Model):
     __tablename__ = 'transport_comments_out'
     id = db.Column(db.String(36), db.ForeignKey('sv_hotel_out.id'), primary_key=True)
     comment = db.Column(db.String(1024))
+
+    def __repr__(self):
+        return f'id: {self.id}\ncomment: {self.comment}'
 
 ##--------------------------------------------------##
 # Renderizar formulario principal y conectar con db. #
@@ -266,7 +272,20 @@ def transporte_comment_out(id):
 def display_comments():
     comments_in = comentario_in.query.all()
     comments_out = comentario_out.query.all()
-    return render_template('table_comments.html', comments_in=comments_in, comments_out=comments_out)
+    viajes_in = arribos.query.all()
+    viajes_out = partidas.query.all()
+    comments_list_out = []
+    comments_list_in = []
+    for viaje in viajes_in:
+        for comment in comments_in:
+            if comment.id == viaje.id:
+                comments_list_in.append((comment.comment, viaje.vuelo))
+    for viaje in viajes_out:
+        for comment in comments_out:
+            if comment.id == viaje.id:
+                comments_list_out.append((comment.comment, viaje.vuelo))
+
+    return render_template('table_comments.html', comments_in=comments_list_in, comments_out=comments_list_out)
 
 #----------------##
 # Run Application #

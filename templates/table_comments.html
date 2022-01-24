@@ -10,11 +10,13 @@
     <table class="table table-bordered">
         <thead>
             <th scope="col">In</th>
+            <th scope="col">Vuelo</th>
         </thead>
         <tbody>
             {% for comment in comments_in %}
             <tr>
-                <td>{{ comment.comment }}</td>
+                <td>{{ comment[0] }}</td>
+                <td>{{ comment[1] }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -24,11 +26,13 @@
     <table class="table table-bordered">
         <thead>
             <th scope="col">Out</th>
+            <th scope="col">Vuelo</th>
         </thead>
         <tbody>
             {% for comment in comments_out %}
             <tr>
-                <td>{{ comment.comment }}</td>
+                <td>{{ comment[0] }}</td>
+                <td>{{ comment[1] }}</td>
             </tr>
             {% endfor %}
         </tbody>
