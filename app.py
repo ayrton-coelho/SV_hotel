@@ -259,6 +259,15 @@ def transporte_comment_out(id):
     else:
         return render_template('comment_out.html', form=form, id=id)
 
+##-----------------##
+# Display comments. #
+##-----------------##
+@app.route('/comments')
+def display_comments():
+    comments_in = comentario_in.query.all()
+    comments_out = comentario_out.query.all()
+    return render_template('table_comments.html', comments_in=comments_in, comments_out=comments_out)
+
 #----------------##
 # Run Application #
 #----------------##

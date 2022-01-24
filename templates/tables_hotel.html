@@ -11,17 +11,17 @@
 </div>
 <div class="viajes">
     <h1>In</h1>
-    <table id="table_in">
+    <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Vuelo</th>
-                <th>Hora de llegada</th>
-                <th>Fecha</th>
-                <th>Habitacion</th>
-                <th>Nro. Huespedes</th>
-                <th>Origen</th>
-                <th>Destino</th>
-                <th>Operaciones</th>
+                <th scope="col">Vuelo</th>
+                <th scope="col">Hora de llegada</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Habitacion</th>
+                <th scope="col">Huespedes</th>
+                <th scope="col">Desde</th>
+                <th scope="col">Hacia</th>
+                <th scope="col">Operaciones</th>
             </tr>
         </thead>
         <tbody>
@@ -35,8 +35,8 @@
                 <td>{{ viaje.origen }}</td>
                 <td>{{ viaje.destino }}</td>
                 <td>
-                    <a href="/hotel/editar/in/{{ viaje.id }}">Editar</a>
-                    <a href="/hotel/eliminar/in/{{ viaje.id }}">Eliminar</a>
+                    <a class="btn btn-warning" href="/hotel/editar/in/{{ viaje.id }}">Editar</a>
+                    <a class="btn btn-danger" href="/hotel/eliminar/in/{{ viaje.id }}">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}
@@ -45,19 +45,19 @@
 </div>
 <div class="viajes">
     <h1>Out</h1>
-    <table id="table_out">
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Vuelo</th>
-                <th>Hora de salida</th>
-                <th>Fecha</th>
-                <th>Hora del pickup</th>
-                <th>Habitacion</th>
-                <th>Nro. Huespedes</th>
-                <th>Nro. de Valijas</th>
-                <th>Origen</th>
-                <th>Destino</th>
-                <th>Operaciones</th>
+                <th scope="col">Hora de salida</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora del pickup</th>
+                <th scope="col">Habitacion</th>
+                <th scope="col">Huespedes</th>
+                <th scope="col">Valijas</th>
+                <th scope="col">Desde</th>
+                <th scope="col">Hacia</th>
+                <th scope="col">Operaciones</th>
             </tr>
         </thead>
         <tbody>
@@ -73,8 +73,8 @@
                 <td>{{ viaje.origen }}</td>
                 <td>{{ viaje.destino }}</td>
                 <td>
-                    <a href="/hotel/editar/out/{{ viaje.id }}">Editar</a>
-                    <a href="/hotel/eliminar/out/{{ viaje.id }}">Eliminar</a>
+                    <a class="btn btn-warning" href="/hotel/editar/out/{{ viaje.id }}">Editar</a>
+                    <a class="btn btn-danger" href="/hotel/eliminar/out/{{ viaje.id }}">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}

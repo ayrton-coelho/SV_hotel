@@ -5,7 +5,7 @@
 <title>Comentario del viaje</title>
 {% endblock %}
 {% block body %}
-<div id="main_form">
+<div id="form">
     <form action="/transporte/comment/out/{{ id }}" method="post", id="ingresos">
         {{ form.hidden_tag() }}
         <fieldset>
@@ -15,7 +15,8 @@
             </div>
         </fieldset>
         <div class="buttons">
-            {{ form.enviar }}
+            {{ form.enviar(class="btn btn-primary") }}
+            <button type="button" class="btn btn-danger" id="limpiar" onclick="clearform()">Limpiar</button>
         </div>
     </form>
 </div>

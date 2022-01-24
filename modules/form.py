@@ -3,7 +3,7 @@ from wtforms import StringField, SubmitField, IntegerField, DateField, RadioFiel
 from wtforms.validators import DataRequired, InputRequired, NumberRange
 
 class HotelForm(FlaskForm):
-    check = RadioField('Check',
+    check = RadioField('Ingreso',
                         choices=[('Arribo', 'Arribo'), ('Partida', 'Partida')],
                         validators=[InputRequired()])
 

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+<title>Hotel Viajes</title>
+{% endblock %}
+
+{% block body %}
+<div class="comentarios">
+    <table class="table table-bordered">
+        <thead>
+            <th scope="col">In</th>
+        </thead>
+        <tbody>
+            {% for comment in comments_in %}
+            <tr>
+                <td>{{ comment.comment }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="comentarios">
+    <table class="table table-bordered">
+        <thead>
+            <th scope="col">Out</th>
+        </thead>
+        <tbody>
+            {% for comment in comments_out %}
+            <tr>
+                <td>{{ comment.comment }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

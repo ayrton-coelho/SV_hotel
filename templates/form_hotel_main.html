@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
@@ -6,40 +6,41 @@
 {% endblock %}
 
 {% block body %}
-<div id="main_form">
-    <form action="/" method="post" id="ingresos">
+<div id="form">
+    <form action="/" method="post" id="main_form">
         {{ form.hidden_tag() }}
         <fieldset>
-            <div class="checks" id="inout">
+            <div class="form-check">
                 {{ form.check.label }}
                 {{ form.check }}
             </div>
-            <div class="horafecha">
+            <div class="form-group">
                 {{ form.fecha.label }}
                 {{ form.fecha }}
                 {{ form.hora.label }}
                 {{ form.hora }}
             </div>
-            <div class="textbox">
-                {{ form.vuelo.label(class="inputtext") }}
+            <div class="form-group">
+                {{ form.vuelo.label }}
                 {{ form.vuelo(class="inputtext") }}
-                {{ form.habitacion.label(class="inputtext") }}
+                {{ form.habitacion.label }}
                 {{ form.habitacion(class="inputtext") }}
-                {{ form.huespedes.label(class="inputtext") }}
+                {{ form.huespedes.label }}
                 {{ form.huespedes(class="inputtext") }}
-                {{ form.valijas.label(class="inputtext") }}
+                {{ form.valijas.label }}
                 {{ form.valijas(class="inputtext") }}
             </div>
-            <div class="checks" id="puerto">
-                {{ form.puerto.label(class="puertos") }}
-                {{ form.puerto(class="puertos") }}
+            <div class="form-group">
+                {{ form.puerto.label }}
+                {{ form.puerto }}
             </div>
             <div class="buttons">
-                {{ form.enviar }}
+                {{ form.enviar(class="btn btn-primary") }}
+                <button type="button" class="btn btn-danger" id="limpiar" onclick="clearform()">Limpiar</button>
             </div>
         </fieldset>
     </form>
 </div>
 
-<!-- <script src="{{ url_for('static', filename='js/form.js') }}"></script> -->
+<script src="{{ url_for('static', filename='js/form.js') }}"></script>
 {% endblock %}

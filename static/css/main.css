@@ -4,7 +4,7 @@ html, body {
 }
 
 body {
-    background-color: #fff;
+    background-color: rgb(235, 235, 235);
     margin: 0;
     padding: 0;}
 
@@ -17,4 +17,8 @@ body {
 .title {
     text-align: center;
     width: 100%;
+}
+
+table {
+    background-color: #fff;
 }

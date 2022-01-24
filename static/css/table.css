@@ -1,33 +1,16 @@
-table {
-    border: 1px solid blueviolet;
-    border-collapse: collapse;
+tr td:last-child {
+    width: 1%;
+    white-space: nowrap;
 }
 
-th, td {
-    border-bottom: 1px solid blueviolet;
-}
-
-/* TABLE CONTAINER */
-.viajes {
-    width: 100%;
-    margin: auto;
-    align-items: center;
+h1 {
     text-align: center;
-    justify-content: center;
-    overflow-x: auto;
 }
 
-table {
-    width: 100%;
-    margin: 0 auto;
+.viajes, .comentarios {
+    padding: 30px;
 }
 
-th {
-    height: 2em;
-    background-color: cornflowerblue;
-    color: white;
-}
-
-tr:hover {
-    background-color: yellow;
+.comentarios {
+    margin: 50px auto;
 }
