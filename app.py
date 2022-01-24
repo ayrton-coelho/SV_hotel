@@ -1,4 +1,5 @@
 from hashlib import new
+import traceback
 from flask import Flask, render_template, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
@@ -199,11 +200,18 @@ def hotel_edit_out(id):
 @app.route('/hotel/eliminar/in/<string:id>')
 def hotel_delete_in(id):
     try:
-        row = db.session.get(arribos, id)
-        db.session.delete(row)
+        comentario = comentario_in.query.get(id)
+        db.session.delete(comentario)
         db.session.commit()
     except Exception:
-        pass
+        traceback.print_exc()
+    try:
+        viaje = arribos.query.get(id)
+        db.session.delete(viaje)
+        db.session.commit()
+    except Exception:
+        traceback.print_exc()
+
     return redirect('/hotel')
 
 ##---------------------------------------------##
@@ -212,11 +220,18 @@ def hotel_delete_in(id):
 @app.route('/hotel/eliminar/out/<string:id>')
 def hotel_delete_out(id):
     try:
-        row = db.session.get(partidas, id)
-        db.session.delete(row)
+        comentario = comentario_out.query.get(id)
+        db.session.delete(comentario)
         db.session.commit()
     except Exception:
-        pass
+        traceback.print_exc()
+    try:
+        viaje = partidas.query.get(id)
+        db.session.delete(viaje)
+        db.session.commit()
+    except Exception:
+        traceback.print_exc()
+
     return redirect('/hotel')
 
 ##--------------------------------##

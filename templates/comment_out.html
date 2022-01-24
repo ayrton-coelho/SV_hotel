@@ -6,7 +6,7 @@
 {% endblock %}
 {% block body %}
 <div id="form">
-    <form action="/transporte/comment/out/{{ id }}" method="post", id="ingresos">
+    <form action="/transporte/comment/out/{{ id }}" method="post", id="main_form">
         {{ form.hidden_tag() }}
         <fieldset>
             <div class="textbox">
@@ -20,4 +20,5 @@
         </div>
     </form>
 </div>
+<script src="{{ url_for('static', filename='js/form.js') }}"></script>
 {% endblock %}
