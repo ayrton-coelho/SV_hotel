@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+<title>Transporte Viajes</title>
+{% endblock %}
+
+{% block body %}
+<div class="title">
+    <h1>Viajes</h1>
+</div>
+<div class="viajes">
+    <h1>Arribos</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Vuelo</th>
+                <th scope="col">Hora de llegada</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Habitacion</th>
+                <th scope="col">Pasajeros</th>
+                <th scope="col">Desde</th>
+                <th scope="col">Hacia</th>
+                <th scope="col">Comentario</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for viaje in all_in %}
+            <tr>
+                <td>{{ viaje.vuelo }}</td>
+                <td>{{ viaje.hora_de_vuelo[:5] }}</td>
+                <td>{{ viaje.fecha }}</td>
+                <td>{{ viaje.nro_habitacion }}</td>
+                <td>{{ viaje.nro_personas }}</td>
+                <td>{{ viaje.origen }}</td>
+                <td>{{ viaje.destino }}</td>
+                <td>{{ viaje.comment }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="viajes">
+    <h1>Partidas</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Vuelo</th>
+                <th scope="col">Hora de salida</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora del pickup</th>
+                <th scope="col">Habitacion</th>
+                <th scope="col">Pasajeros</th>
+                <th scope="col">Valijas</th>
+                <th scope="col">Desde</th>
+                <th scope="col">Hacia</th>
+                <th scope="col">Comentario</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for viaje in all_out %}
+            <tr>
+                <td>{{ viaje.vuelo }}</td>
+                <td>{{ viaje.hora_de_vuelo[:5] }}</td>
+                <td>{{ viaje.fecha }}</td>
+                <td>{{ viaje.hora_pickup }}</td>
+                <td>{{ viaje.nro_habitacion }}</td>
+                <td>{{ viaje.nro_personas }}</td>
+                <td>{{ viaje.nro_valijas }}</td>
+                <td>{{ viaje.origen }}</td>
+                <td>{{ viaje.destino }}</td>
+                <td>{{ viaje.comment }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

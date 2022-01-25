@@ -53,6 +53,34 @@ class partidas(db.Model):
     def __repr__(self):
         return f'id: {self.id}\nvuelo: {self.vuelo}\nhora: {self.hora_de_vuelo}\nfecha: {self.fecha}\nhuespedes: {self.nro_personas}\nhabitacion: {self.nro_habitacion}\norigen: {self.origen}\ndestino: {self.destino}\n'
 
+class arribos_all(db.Model):
+    __tablename__ = 'all_in'
+    id = db.Column(db.String(36), primary_key=True)
+    hora_creacion = db.Column(db.Time, nullable=False)
+    vuelo = db.Column(db.String(128))
+    hora_de_vuelo = db.Column(db.String(10), nullable=False)
+    fecha = db.Column(db.Date, nullable=False)
+    nro_habitacion = db.Column(db.Integer, nullable=False)
+    nro_personas = db.Column(db.Integer, nullable=False)
+    origen = db.Column(db.String(128), nullable=False)
+    destino = db.Column(db.String(128), nullable=False)
+    comment = db.Column(db.String(1024))
+
+class partidas_all(db.Model):
+    __tablename__ = 'all_out'
+    id = db.Column(db.String(36), primary_key=True)
+    hora_creacion = db.Column(db.Time, nullable=False)
+    vuelo = db.Column(db.String(128))
+    hora_de_vuelo = db.Column(db.String(10), nullable=False)
+    fecha = db.Column(db.Date, nullable=False)
+    hora_pickup = db.Column(db.String(30), nullable=False)
+    nro_habitacion = db.Column(db.Integer, nullable=False)
+    nro_personas = db.Column(db.Integer, nullable=False)
+    nro_valijas = db.Column(db.Integer)
+    origen = db.Column(db.String(128), nullable=False)
+    destino = db.Column(db.String(128), nullable=False)
+    comment = db.Column(db.String(1024))
+
 class comentario_in(db.Model):
     __tablename__ = 'transport_comments_in'
     id = db.Column(db.String(36), db.ForeignKey('sv_hotel_in.id'), primary_key=True)
@@ -78,6 +106,8 @@ def form():
     if request.method == 'POST':
         arribo = arribos()
         partida = partidas()
+        arribo_all = arribos_all()
+        partida_all = partidas_all()
         id = str(uuid.uuid4())
         created_at = datetime.utcnow()
         check = form.check.data
@@ -99,8 +129,18 @@ def form():
             arribo.nro_personas = huespedes
             arribo.origen = puerto
             arribo.destino = hotel
+            arribo_all.id = id
+            arribo_all.hora_creacion = created_at
+            arribo_all.vuelo = vuelo
+            arribo_all.hora_de_vuelo = hora
+            arribo_all.fecha = fecha
+            arribo_all.nro_habitacion = habitacion
+            arribo_all.nro_personas = huespedes
+            arribo_all.origen = puerto
+            arribo_all.destino = hotel
             try:
                 db.session.add(arribo)
+                db.session.add(arribo_all)
                 print(arribo)
                 db.session.commit()
             except Exception as e:
@@ -117,8 +157,20 @@ def form():
             partida.nro_valijas = valijas
             partida.origen = hotel
             partida.destino = puerto
+            partida_all.id = id
+            partida_all.hora_creacion = created_at
+            partida_all.vuelo = vuelo
+            partida_all.hora_de_vuelo = hora
+            partida_all.fecha = fecha
+            partida_all.hora_pickup = hora_pickup(hora, fecha)
+            partida_all.nro_habitacion = habitacion
+            partida_all.nro_personas = huespedes
+            partida_all.nro_valijas = valijas
+            partida_all.origen = hotel
+            partida_all.destino = puerto
             try:
                 db.session.add(partida)
+                db.session.add(partida_all)
                 db.session.commit()
                 print(partida)
             except Exception as e:
@@ -155,6 +207,7 @@ def transporte():
 def hotel_edit_in(id):
     form = HotelForm()
     in_viaje = arribos.query.get(id)
+    in_viaje_all = arribos_all.query.get(id)
     if request.method == 'POST':
         try:
             setattr(in_viaje, 'vuelo', form.vuelo.data)
@@ -163,6 +216,12 @@ def hotel_edit_in(id):
             setattr(in_viaje, 'nro_habitacion', form.habitacion.data)
             setattr(in_viaje, 'nro_personas', form.huespedes.data)
             setattr(in_viaje, 'origen', form.puerto.data)
+            setattr(in_viaje_all, 'vuelo', form.vuelo.data)
+            setattr(in_viaje_all, 'hora_de_vuelo', form.hora.data)
+            setattr(in_viaje_all, 'fecha', form.fecha.data)
+            setattr(in_viaje_all, 'nro_habitacion', form.habitacion.data)
+            setattr(in_viaje_all, 'nro_personas', form.huespedes.data)
+            setattr(in_viaje_all, 'origen', form.puerto.data)
             db.session.commit()
         except Exception as e:
             print(e)
@@ -175,6 +234,7 @@ def hotel_edit_in(id):
 def hotel_edit_out(id):
     form = HotelForm()
     out_viaje = partidas.query.get(id)
+    out_viaje_all = partidas_all.query.get(id)
     if request.method == 'POST':
         hora = form.hora.data
         fecha = form.fecha.data
@@ -188,6 +248,14 @@ def hotel_edit_out(id):
             setattr(out_viaje, 'nro_personas', form.huespedes.data)
             setattr(out_viaje, 'nro_valijas', form.valijas.data)
             setattr(out_viaje, 'destino', form.puerto.data)
+            setattr(out_viaje_all, 'vuelo', form.vuelo.data)
+            setattr(out_viaje_all, 'hora_de_vuelo', hora)
+            setattr(out_viaje_all, 'fecha', fecha)
+            setattr(out_viaje_all, 'hora_pickup', pickup)
+            setattr(out_viaje_all, 'nro_habitacion', form.habitacion.data)
+            setattr(out_viaje_all, 'nro_personas', form.huespedes.data)
+            setattr(out_viaje_all, 'nro_valijas', form.valijas.data)
+            setattr(out_viaje_all, 'destino', form.puerto.data)
             db.session.commit()
         except Exception as e:
             print(e)
@@ -245,6 +313,7 @@ def transporte_comment_in(id):
     import traceback
     form = Comment_in()
     viaje = arribos.query.get(id)
+    comment_in_all = arribos_all.query.get(id)
     vuelo = viaje.vuelo
     if request.method == 'POST':
         try:
@@ -254,6 +323,7 @@ def transporte_comment_in(id):
             new_comment = comentario_in()
             setattr(new_comment, 'id', id)
             setattr(new_comment, 'comment', form.comment.data)
+            setattr(comment_in_all, 'comment', form.comment.data)
             db.session.add(new_comment)
             db.session.commit()
         except Exception:
@@ -268,6 +338,7 @@ def transporte_comment_out(id):
     import traceback
     form = Comment_out()
     viaje = partidas.query.get(id)
+    comment_out_all = partidas_all.query.get(id)
     vuelo = viaje.vuelo
     if request.method == 'POST':
         try:
@@ -277,6 +348,7 @@ def transporte_comment_out(id):
             new_comment = comentario_out()
             setattr(new_comment, 'id', id)
             setattr(new_comment, 'comment', form.comment.data)
+            setattr(comment_out_all, 'comment', form.comment.data)
             db.session.add(new_comment)
             db.session.commit()
         except Exception:
@@ -306,6 +378,15 @@ def display_comments():
                 comments_list_out.append((comment.comment, viaje.vuelo))
 
     return render_template('table_comments.html', comments_in=comments_list_in, comments_out=comments_list_out)
+
+##------------##
+# Display all. #
+##------------##
+@app.route('/all')
+def display_all():
+    all_in = arribos_all.query.order_by(arribos_all.hora_creacion.desc()).all()
+    all_out = partidas_all.query.order_by(partidas_all.hora_creacion.desc()).all()
+    return render_template('display_all.html', all_in=all_in, all_out=all_out)
 
 def autorrellenar():
     vuelos = ['ABC 123', 'JBR 5443', 'HNX 890', 'KAP 314', 'UFW 427']
