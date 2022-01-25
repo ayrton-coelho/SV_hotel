@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import date, datetime
 from modules.form import HotelForm
 from modules.comment_in import Comment_in
 from modules.comment_out import Comment_out
