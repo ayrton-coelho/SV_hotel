@@ -1,9 +1,5 @@
-from hashlib import new
-import traceback
 from flask import Flask, render_template, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import ForeignKey
-from sqlalchemy.sql import text
 from datetime import datetime
 from modules.form import HotelForm
 from modules.comment_in import Comment_in
@@ -273,13 +269,13 @@ def hotel_delete_in(id):
         db.session.delete(comentario)
         db.session.commit()
     except Exception:
-        traceback.print_exc()
+        print_exc()
     try:
         viaje = arribos.query.get(id)
         db.session.delete(viaje)
         db.session.commit()
     except Exception:
-        traceback.print_exc()
+        print_exc()
 
     return redirect('/hotel')
 
@@ -293,13 +289,13 @@ def hotel_delete_out(id):
         db.session.delete(comentario)
         db.session.commit()
     except Exception:
-        traceback.print_exc()
+        print_exc()
     try:
         viaje = partidas.query.get(id)
         db.session.delete(viaje)
         db.session.commit()
     except Exception:
-        traceback.print_exc()
+        print_exc()
 
     return redirect('/hotel')
 
@@ -310,7 +306,6 @@ def hotel_delete_out(id):
 # in #
 @app.route('/transporte/comment/in/<string:id>', methods=['GET', 'POST'])
 def transporte_comment_in(id):
-    import traceback
     form = Comment_in()
     viaje = arribos.query.get(id)
     comment_in_all = arribos_all.query.get(id)
@@ -327,7 +322,7 @@ def transporte_comment_in(id):
             db.session.add(new_comment)
             db.session.commit()
         except Exception:
-            traceback.print_exc()
+            print_exc()
         return redirect('/transporte')
     else:
         return render_template('comment_in.html', form=form, id=id, vuelo=vuelo)
@@ -335,7 +330,6 @@ def transporte_comment_in(id):
 # out #
 @app.route('/transporte/comment/out/<string:id>', methods=['GET', 'POST'])
 def transporte_comment_out(id):
-    import traceback
     form = Comment_out()
     viaje = partidas.query.get(id)
     comment_out_all = partidas_all.query.get(id)
@@ -352,7 +346,7 @@ def transporte_comment_out(id):
             db.session.add(new_comment)
             db.session.commit()
         except Exception:
-            traceback.print_exc()
+            print_exc()
         return redirect('/transporte')
     else:
         return render_template('comment_out.html', form=form, id=id, vuelo=vuelo)
